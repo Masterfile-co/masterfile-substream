@@ -1,6 +1,7 @@
 pub mod abi;
 pub mod drop;
 pub mod pb;
+pub mod safe;
 pub mod split;
 pub mod utils;
 
@@ -15,6 +16,8 @@ use pb::masterfile::registry::v1::{
     deployment::{Contract, ContractType, DeploymentType, Drop, Factory, Split, Unknown},
     Deployment, Deployments,
 };
+use pb::masterfile::safe::v1::SafeEvent;
+use safe::extract_safe_event;
 use substreams::prelude::*;
 use substreams::{errors::Error, log, store::StoreSetProto, Hex};
 use substreams_ethereum::block_view::LogView;
@@ -74,23 +77,31 @@ fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Masterfi
 
         if let Some(deployment) = store.get_last(&address) {
             match deployment.deployment_type.unwrap() {
-                Factory => match deployment.contract_type.unwrap() {
-                    Channel => {
+                DeploymentType::Factory(_) => match deployment.contract_type.unwrap() {
+                    ContractType::Channel(_) => {
                         // TODO: Channel factory events
                     }
-                    Drop => {
+                    ContractType::Drop(_) => {
                         // TODO: Drop factory events
                     }
-                    Split => {
+                    ContractType::Split(_) => {
                         // TODO: Split factory events
                     }
-                    Unknown => {}
+                    ContractType::UnknownContract(_) => {}
                 },
-                Contract => match deployment.contract_type.unwrap() {
-                    Channel => {
+                DeploymentType::Contract(_) => match deployment.contract_type.unwrap() {
+                    ContractType::Channel(_) => {
                         // TODO: Channel events
+                        events.push(MasterfileEvent {
+                            event: Some(masterfile_event::Event::Safe(SafeEvent {
+                                event: extract_safe_event(&log),
+                                safe_address: address.clone(),
+                            })),
+                            ordinal: log.block_index() as u64,
+                            metadata,
+                        })
                     }
-                    Drop => {
+                    ContractType::Drop(_) => {
                         events.push(MasterfileEvent {
                             event: Some(masterfile_event::Event::Drop(DropEvent {
                                 event: extract_drop_event(&log),
@@ -102,14 +113,14 @@ fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Masterfi
                     }
 
                     // TODO: Drop events
-                    Split => {
+                    ContractType::Split(_) => {
                         // TODO: Split events
                     }
-                    Unknown => {
+                    ContractType::UnknownContract(_) => {
                         // TODO: Unknown events
                     }
                 },
-                Unknown => {}
+                DeploymentType::UnknownType(_) => {}
             }
         }
     }

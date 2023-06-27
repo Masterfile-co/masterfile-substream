@@ -20,6 +20,7 @@ message SafeEvent {
 		SafeSetup safe_setup = 12;
 		SafeMsg safe_msg = 13;
 	}
+	string safe_address = 14;
 
 
 	message AddedOwner {

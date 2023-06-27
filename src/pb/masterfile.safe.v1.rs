@@ -2,6 +2,8 @@
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct SafeEvent {
+    #[prost(string, tag="14")]
+    pub safe_address: ::prost::alloc::string::String,
     #[prost(oneof="safe_event::Event", tags="1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13")]
     pub event: ::core::option::Option<safe_event::Event>,
 }
