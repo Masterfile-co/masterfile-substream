@@ -1,23 +1,31 @@
 // @generated
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Event {
-    #[prost(oneof="event::Event", tags="1")]
-    pub event: ::core::option::Option<event::Event>,
+pub struct MasterfileEvent {
+    #[prost(message, optional, tag="101")]
+    pub metadata: ::core::option::Option<super::super::common::v1::TransactionMetadata>,
+    #[prost(uint64, tag="200")]
+    pub ordinal: u64,
+    #[prost(oneof="masterfile_event::Event", tags="1, 2, 3")]
+    pub event: ::core::option::Option<masterfile_event::Event>,
 }
-/// Nested message and enum types in `Event`.
-pub mod event {
+/// Nested message and enum types in `MasterfileEvent`.
+pub mod masterfile_event {
     #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Event {
         #[prost(message, tag="1")]
         Safe(super::super::super::safe::v1::SafeEvent),
+        #[prost(message, tag="2")]
+        Split(super::super::super::split::v1::SplitEvent),
+        #[prost(message, tag="3")]
+        Drop(super::super::super::drop::v1::DropEvent),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Events {
+pub struct MasterfileEvents {
     #[prost(message, repeated, tag="1")]
-    pub events: ::prost::alloc::vec::Vec<Event>,
+    pub events: ::prost::alloc::vec::Vec<MasterfileEvent>,
 }
 // @@protoc_insertion_point(module)

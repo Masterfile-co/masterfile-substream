@@ -2,15 +2,21 @@ syntax = "proto3";
 
 import "common.proto";
 import "safe.proto";
+import "split.proto";
+import "drop.proto";
 
 package masterfile.events.v1;
 
-message Event {
+message MasterfileEvent {
 	oneof event {
 		masterfile.safe.v1.SafeEvent safe = 1;
+		masterfile.split.v1.SplitEvent split = 2;
+		masterfile.drop.v1.DropEvent drop = 3;
 	}
+	masterfile.common.v1.TransactionMetadata metadata = 101;
+	uint64 ordinal = 200;
 }
 
-message Events {
-	repeated Event events = 1;
+message MasterfileEvents {
+	repeated MasterfileEvent events = 1;
 }

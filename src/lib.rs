@@ -1,10 +1,15 @@
 pub mod abi;
+pub mod drop;
 pub mod pb;
+pub mod split;
 pub mod utils;
 
 use crate::utils::pretty_hex;
 use abi::Registry::events;
-use pb::masterfile::events::v1::Events;
+use drop::extract_drop_event;
+use pb::masterfile::common::v1::TransactionMetadata;
+use pb::masterfile::drop::v1::DropEvent;
+use pb::masterfile::events::v1::{masterfile_event, MasterfileEvent, MasterfileEvents};
 use pb::masterfile::registry::v1::deployment::Channel;
 use pb::masterfile::registry::v1::{
     deployment::{Contract, ContractType, DeploymentType, Drop, Factory, Split, Unknown},
@@ -12,6 +17,7 @@ use pb::masterfile::registry::v1::{
 };
 use substreams::prelude::*;
 use substreams::{errors::Error, log, store::StoreSetProto, Hex};
+use substreams_ethereum::block_view::LogView;
 use substreams_ethereum::{pb::eth::v2::Block, Event};
 
 #[substreams::handlers::map]
@@ -55,12 +61,18 @@ fn store_deployments(deployments: Deployments, store: StoreSetProto<Deployment>)
 }
 
 #[substreams::handlers::map]
-fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Events, Error> {
+fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<MasterfileEvents, Error> {
     let mut events = vec![];
 
     for log in block.logs() {
         let address = pretty_hex(&log.address());
-        if let Some(deployment) = store.get_last(address) {
+        let metadata = extract_metadata(&log, &block);
+
+        // TODO: If registry
+
+        // TODO: If split main
+
+        if let Some(deployment) = store.get_last(&address) {
             match deployment.deployment_type.unwrap() {
                 Factory => match deployment.contract_type.unwrap() {
                     Channel => {
@@ -79,8 +91,17 @@ fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Events, 
                         // TODO: Channel events
                     }
                     Drop => {
-                        // TODO: Drop events
+                        events.push(MasterfileEvent {
+                            event: Some(masterfile_event::Event::Drop(DropEvent {
+                                event: extract_drop_event(&log),
+                                drop_address: address.clone(),
+                            })),
+                            ordinal: log.block_index() as u64,
+                            metadata,
+                        });
                     }
+
+                    // TODO: Drop events
                     Split => {
                         // TODO: Split events
                     }
@@ -93,7 +114,7 @@ fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Events, 
         }
     }
 
-    Ok(Events { events })
+    Ok(MasterfileEvents { events })
 }
 
 const CHANNEL_TYPE: &str = "0x446e88dcc2f366f48c68cb0da4f16d5c3aa0bd3060e71140482c0cc6bd95d989"; // keccak256(CHANNEL)
@@ -108,4 +129,16 @@ fn map_contract_type(name: &str) -> Option<ContractType> {
         _ => ContractType::UnknownContract(Unknown {}),
     };
     Some(contract_type)
+}
+
+pub fn extract_metadata(log: &LogView, block: &Block) -> Option<TransactionMetadata> {
+    Some(TransactionMetadata {
+        tx_hash: pretty_hex(&log.receipt.transaction.hash),
+        block_number: block.number,
+        block_timestamp: block.timestamp_seconds(),
+        to: pretty_hex(&log.receipt.transaction.to),
+        from: pretty_hex(&log.receipt.transaction.from),
+        log_index: log.log.index,
+        block_index: log.log.block_index,
+    })
 }

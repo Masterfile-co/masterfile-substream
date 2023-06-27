@@ -1,0 +1,102 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package masterfile.drop.v1;
+
+message DropEvent {
+	oneof event {
+		Approval approval = 1;
+		ApprovalForAll approval_for_all = 2;
+		DropCreated drop_created = 3;
+		DropSaleWindowSet drop_sale_window_set = 4;
+		EditionSet edition_set = 5;
+		ListingSet listing_set = 6;
+		MetaTransactionExecuted meta_transaction_executed = 7;
+		PrimarySale primary_sale = 8;
+		TokenEditionSet token_edition_set = 9;
+		Transfer transfer = 10;
+	}
+	string drop_address = 101;
+
+
+	message Approval {
+		string owner = 1;
+		string approved = 2;
+		string token_id = 3;
+	}
+	
+	message ApprovalForAll {
+		string owner = 1;
+		string operator = 2;
+		bool approved = 3;
+	}
+	
+	message DropCreated {
+		string creator = 1;
+		string name = 2;
+		string symbol = 3;
+		string series = 4;
+		uint64 volume = 5;
+	}
+	
+	message DropSaleWindowSet {
+		string drop_start_date = 1;
+		string drop_end_date = 2;
+	}
+	
+	message ListingSet {
+		uint64 edition_number = 1;
+		string quantity = 2;
+		string price = 3;
+	}
+
+	message MysteryBoxSet{
+		repeated uint64 probabilities = 1;
+	}
+	
+	message EditionSet {
+		uint64 edition_number = 1;
+		string arweaveCID = 2;
+		string recipient = 3;
+	}
+	
+	// TODO: Move to shared proto
+	message MetaTransactionExecuted {
+		string user_address = 1;
+		string relayer_address = 2;
+		string function_signature = 3;
+	}
+	
+	message PrimarySale {
+		string buyer = 1;
+		string recipient = 2;
+		uint64 edition_number = 3;
+		string quantity = 4;
+		string total_price = 5;
+	}
+	
+	message TokenEditionSet {
+		string from_token_id = 1;
+		string to_token_id = 2;
+		uint64 edition_number = 3;
+	}
+	
+	message Transfer {
+		string from = 1;
+		string to = 2;
+		string token_id = 3;
+	}
+
+	message RandomnessRequested {
+		string token_id = 1;
+		string request_id = 2;
+	}
+
+	message RandomnessReceived {
+		string token_id = 1;
+		string request_id = 2;
+		string randomness = 3;
+	}
+}
+

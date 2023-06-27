@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package masterfile.split.v1;
+
+message SplitEvent {
+	oneof event {
+		CancelControlTransfer cancel_control_transfer = 1;
+		ControlTransfer control_transfer = 2;
+		CreateSplit create_split = 3;
+		DistributeERC20 distribute_erc20 = 4;
+		DistributeEth distribute_eth = 5;
+		InitiateControlTransfer initiate_control_transfer = 6;
+		UpdateSplit update_split = 7;
+		// Withdrawl withdrawl = 8;
+	}
+
+
+	message CancelControlTransfer {
+		string split = 1;
+	}
+	
+	message ControlTransfer {
+		string split = 1;
+		string previous_controller = 2;
+		string new_controller = 3;
+	}
+	
+	message CreateSplit {
+		string split = 1;
+		string distributor_fee = 2;
+		string controller = 3;
+		repeated SplitAllocation allocations = 4; 
+	}
+	
+	message DistributeERC20 {
+		string split = 1;
+		string token = 2;
+		string amount = 3;
+		string distributor = 4;
+	}
+	
+	message DistributeEth {
+		string split = 1;
+		string amount = 2;
+		string distributor = 3;
+	}
+	
+	message InitiateControlTransfer {
+		string split = 1;
+		string new_potential_controller = 2;
+	}
+	
+	message UpdateSplit {
+		string split = 1;
+		string distributor_fee = 2;
+		repeated SplitAllocation allocations = 3; 
+	}
+
+	message SplitAllocation {
+		string account = 1;
+		uint64 percent_allocation = 2;
+	}
+}
+
+
+
+// message Withdrawl {
+// 	string account = 1;
+// 	string ethAmount = 2;
+// 	repeated TokenAmounts tokenAmounts = 3;
+// }
+
+
+
+// message TokenAmounts {
+// 	string token = 1;
+// 	string amount = 2;
+// }

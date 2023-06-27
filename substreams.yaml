@@ -10,6 +10,8 @@ protobuf:
     - common.proto
     - safe.proto
     - output.proto
+    - split.proto
+    - drop.proto
   importPaths:
     - ./proto
 
@@ -41,4 +43,4 @@ modules:
       - source: sf.ethereum.type.v2.Block
       - store: store_deployments
     output:
-      type: proto:masterfile.events.v1.Events
+      type: proto:masterfile.events.v1.MasterfileEvents

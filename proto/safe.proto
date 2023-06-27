@@ -20,9 +20,7 @@ message SafeEvent {
 		SafeSetup safe_setup = 12;
 		SafeMsg safe_msg = 13;
 	}
-	string address = 100;
-	masterfile.common.v1.TransactionMetadata metadata = 101;
-	uint64 ordinal = 200;
+
 
 	message AddedOwner {
 		string owner = 1;
