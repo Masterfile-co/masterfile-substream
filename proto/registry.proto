@@ -4,23 +4,30 @@ import "common.proto";
 
 package masterfile.registry.v1;
 
-enum DeploymentType {
-	UNKNOWN_DEPLOYMENT = 0;
-	CONTRACT = 1;
-	FACTORY = 2;
-}
-
-enum ContractType {
-	UNKNOWN_CONTRACT = 0;
-	CHANNEL = 1;
-	DROP = 2;
-	SPLIT = 3;
-}
-
 message Deployment {
 	string address = 1;
-	DeploymentType deployment = 2;
-	ContractType contract = 3;
+	uint64 ordinal = 2;
+	oneof deploymentType {
+		Contract contract = 100;
+		Factory factory = 101;
+		Unknown unknownType = 102;
+	}
+	oneof contractType {
+		Channel channel = 200;
+		Drop drop = 201;
+		Split split = 202;
+		Unknown unknownContract = 203;
+	}
+
+
+	message Contract {}
+	message Factory {}
+
+	message Channel {}
+	message Drop{}
+	message Split {}
+
+	message Unknown {}
 }
 
 message Deployments {

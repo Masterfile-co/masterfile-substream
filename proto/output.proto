@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+import "common.proto";
+import "safe.proto";
+
+package masterfile.events.v1;
+
+message Event {
+	oneof event {
+		masterfile.safe.v1.SafeEvent safe = 1;
+	}
+}
+
+message Events {
+	repeated Event events = 1;
+}

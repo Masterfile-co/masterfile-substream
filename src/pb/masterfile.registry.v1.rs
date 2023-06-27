@@ -4,10 +4,61 @@
 pub struct Deployment {
     #[prost(string, tag="1")]
     pub address: ::prost::alloc::string::String,
-    #[prost(enumeration="DeploymentType", tag="2")]
-    pub deployment: i32,
-    #[prost(enumeration="ContractType", tag="3")]
-    pub contract: i32,
+    #[prost(uint64, tag="2")]
+    pub ordinal: u64,
+    #[prost(oneof="deployment::DeploymentType", tags="100, 101, 102")]
+    pub deployment_type: ::core::option::Option<deployment::DeploymentType>,
+    #[prost(oneof="deployment::ContractType", tags="200, 201, 202, 203")]
+    pub contract_type: ::core::option::Option<deployment::ContractType>,
+}
+/// Nested message and enum types in `Deployment`.
+pub mod deployment {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Contract {
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Factory {
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Channel {
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Drop {
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Split {
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct Unknown {
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum DeploymentType {
+        #[prost(message, tag="100")]
+        Contract(Contract),
+        #[prost(message, tag="101")]
+        Factory(Factory),
+        #[prost(message, tag="102")]
+        UnknownType(Unknown),
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum ContractType {
+        #[prost(message, tag="200")]
+        Channel(Channel),
+        #[prost(message, tag="201")]
+        Drop(Drop),
+        #[prost(message, tag="202")]
+        Split(Split),
+        #[prost(message, tag="203")]
+        UnknownContract(Unknown),
+    }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -97,66 +148,5 @@ pub mod registry_event {
 pub struct RegistryEvents {
     #[prost(message, repeated, tag="1")]
     pub events: ::prost::alloc::vec::Vec<RegistryEvent>,
-}
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum DeploymentType {
-    UnknownDeployment = 0,
-    Contract = 1,
-    Factory = 2,
-}
-impl DeploymentType {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            DeploymentType::UnknownDeployment => "UNKNOWN_DEPLOYMENT",
-            DeploymentType::Contract => "CONTRACT",
-            DeploymentType::Factory => "FACTORY",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "UNKNOWN_DEPLOYMENT" => Some(Self::UnknownDeployment),
-            "CONTRACT" => Some(Self::Contract),
-            "FACTORY" => Some(Self::Factory),
-            _ => None,
-        }
-    }
-}
-#[derive(Clone, Copy, Debug, PartialEq, Eq, Hash, PartialOrd, Ord, ::prost::Enumeration)]
-#[repr(i32)]
-pub enum ContractType {
-    UnknownContract = 0,
-    Channel = 1,
-    Drop = 2,
-    Split = 3,
-}
-impl ContractType {
-    /// String value of the enum field names used in the ProtoBuf definition.
-    ///
-    /// The values are not transformed in any way and thus are considered stable
-    /// (if the ProtoBuf definition does not change) and safe for programmatic use.
-    pub fn as_str_name(&self) -> &'static str {
-        match self {
-            ContractType::UnknownContract => "UNKNOWN_CONTRACT",
-            ContractType::Channel => "CHANNEL",
-            ContractType::Drop => "DROP",
-            ContractType::Split => "SPLIT",
-        }
-    }
-    /// Creates an enum from field names used in the ProtoBuf definition.
-    pub fn from_str_name(value: &str) -> ::core::option::Option<Self> {
-        match value {
-            "UNKNOWN_CONTRACT" => Some(Self::UnknownContract),
-            "CHANNEL" => Some(Self::Channel),
-            "DROP" => Some(Self::Drop),
-            "SPLIT" => Some(Self::Split),
-            _ => None,
-        }
-    }
 }
 // @@protoc_insertion_point(module)
