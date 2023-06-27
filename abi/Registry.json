@@ -1,0 +1,258 @@
+[
+  { "stateMutability": "nonpayable", "type": "constructor", "inputs": [] },
+  { "type": "error", "inputs": [], "name": "NotFactory" },
+  { "type": "error", "inputs": [], "name": "WrongVersion" },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "name",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "deployment",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "DeploymentAdded"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "name",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "version",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "factory",
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
+      }
+    ],
+    "name": "FactoryAdded"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "previousAdminRole",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "newAdminRole",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      }
+    ],
+    "name": "RoleAdminChanged"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "sender",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "RoleGranted"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "role",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "account",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "sender",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "RoleRevoked"
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "DEFAULT_ADMIN_ROLE",
+    "outputs": [{ "name": "", "internalType": "bytes32", "type": "bytes32" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      { "name": "contractType", "internalType": "bytes32", "type": "bytes32" },
+      { "name": "deployment", "internalType": "address", "type": "address" }
+    ],
+    "name": "addDeployment",
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      { "name": "name_", "internalType": "bytes32", "type": "bytes32" },
+      {
+        "name": "factory_",
+        "internalType": "contract Factory",
+        "type": "address"
+      }
+    ],
+    "name": "addFactory",
+    "outputs": []
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [
+      { "name": "name", "internalType": "bytes32", "type": "bytes32" },
+      { "name": "version", "internalType": "uint256", "type": "uint256" }
+    ],
+    "name": "getFactory",
+    "outputs": [
+      {
+        "name": "factory",
+        "internalType": "contract Factory",
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [
+      { "name": "role", "internalType": "bytes32", "type": "bytes32" }
+    ],
+    "name": "getRoleAdmin",
+    "outputs": [{ "name": "", "internalType": "bytes32", "type": "bytes32" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      { "name": "role", "internalType": "bytes32", "type": "bytes32" },
+      { "name": "account", "internalType": "address", "type": "address" }
+    ],
+    "name": "grantRole",
+    "outputs": []
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [
+      { "name": "role", "internalType": "bytes32", "type": "bytes32" },
+      { "name": "account", "internalType": "address", "type": "address" }
+    ],
+    "name": "hasRole",
+    "outputs": [{ "name": "", "internalType": "bool", "type": "bool" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [
+      { "name": "", "internalType": "bytes32", "type": "bytes32" },
+      { "name": "", "internalType": "address", "type": "address" }
+    ],
+    "name": "isDeployment",
+    "outputs": [{ "name": "", "internalType": "bool", "type": "bool" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [
+      { "name": "", "internalType": "bytes32", "type": "bytes32" },
+      { "name": "", "internalType": "address", "type": "address" }
+    ],
+    "name": "isFactory",
+    "outputs": [{ "name": "", "internalType": "bool", "type": "bool" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [
+      { "name": "name", "internalType": "bytes32", "type": "bytes32" }
+    ],
+    "name": "latestFactoryVersion",
+    "outputs": [{ "name": "", "internalType": "uint256", "type": "uint256" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      { "name": "role", "internalType": "bytes32", "type": "bytes32" },
+      { "name": "account", "internalType": "address", "type": "address" }
+    ],
+    "name": "renounceRole",
+    "outputs": []
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      { "name": "role", "internalType": "bytes32", "type": "bytes32" },
+      { "name": "account", "internalType": "address", "type": "address" }
+    ],
+    "name": "revokeRole",
+    "outputs": []
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [
+      { "name": "interfaceId", "internalType": "bytes4", "type": "bytes4" }
+    ],
+    "name": "supportsInterface",
+    "outputs": [{ "name": "", "internalType": "bool", "type": "bool" }]
+  }
+]

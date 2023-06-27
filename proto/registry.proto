@@ -1,0 +1,74 @@
+syntax = "proto3";
+
+import "common.proto";
+
+package masterfile.registry.v1;
+
+enum DeploymentType {
+	UNKNOWN_DEPLOYMENT = 0;
+	CONTRACT = 1;
+	FACTORY = 2;
+}
+
+enum ContractType {
+	UNKNOWN_CONTRACT = 0;
+	CHANNEL = 1;
+	DROP = 2;
+	SPLIT = 3;
+}
+
+message Deployment {
+	string address = 1;
+	DeploymentType deployment = 2;
+	ContractType contract = 3;
+}
+
+message Deployments {
+	repeated Deployment deployments = 1;
+}
+
+message RegistryEvent {
+	oneof event {
+		DeploymentAdded deploymentAdded = 1;
+		FactoryAdded factoryAdded = 2;
+		RoleAdminChanged roleAdminChanged = 3;
+		RoleGranted roleGranted = 4;
+		RoleRevoked roleRevoked = 5;
+	}
+	string address = 100;
+	masterfile.common.v1.TransactionMetadata metadata = 101;
+	uint64 ordinal = 200;
+
+	message DeploymentAdded {
+		string deployment = 1;
+		string name = 2;
+	}
+	
+	message FactoryAdded {
+		string factory = 1;
+		string name = 2;
+		uint64 version = 3;
+	}
+	
+	message RoleAdminChanged {
+		string role = 1;
+		string previousAdminRole = 2;
+		string newAdminRole = 3;
+	}
+	
+	message RoleGranted {
+		string role = 1;
+		string account = 2;
+		string sender = 3;
+	}
+	
+	message RoleRevoked {
+		string role = 1;
+		string account = 2;
+		string sender = 3;
+	}
+}
+
+message RegistryEvents {
+	repeated RegistryEvent events = 1;
+}

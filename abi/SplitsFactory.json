@@ -1,0 +1,81 @@
+[
+  {
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "inputs": [
+      { "name": "registry", "internalType": "address", "type": "address" },
+      {
+        "name": "splitMain_",
+        "internalType": "contract ISplitMain",
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "split",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "channel",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "SplitDeployed"
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "contractVersion",
+    "outputs": [{ "name": "", "internalType": "uint32", "type": "uint32" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      { "name": "accounts", "internalType": "address[]", "type": "address[]" },
+      {
+        "name": "percentAllocations",
+        "internalType": "uint32[]",
+        "type": "uint32[]"
+      }
+    ],
+    "name": "createSplit",
+    "outputs": [
+      { "name": "split", "internalType": "address", "type": "address" }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "name",
+    "outputs": [{ "name": "", "internalType": "string", "type": "string" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "registry",
+    "outputs": [
+      { "name": "", "internalType": "contract IRegistry", "type": "address" }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "splitMain",
+    "outputs": [
+      { "name": "", "internalType": "contract ISplitMain", "type": "address" }
+    ]
+  }
+]

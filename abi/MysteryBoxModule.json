@@ -1,0 +1,190 @@
+[
+  { "type": "error", "inputs": [], "name": "DropConcluded" },
+  { "type": "error", "inputs": [], "name": "DropNotStarted" },
+  { "type": "error", "inputs": [], "name": "InvalidDropWindow" },
+  { "type": "error", "inputs": [], "name": "InvalidId" },
+  { "type": "error", "inputs": [], "name": "InvalidItem" },
+  { "type": "error", "inputs": [], "name": "InvalidProbabilities" },
+  { "type": "error", "inputs": [], "name": "SoldOut" },
+  { "type": "error", "inputs": [], "name": "TransactionFailed" },
+  { "type": "error", "inputs": [], "name": "Unauthorized" },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "id",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "requestId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "recipient",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "itemIndex",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "name": "MysteryBoxItemRedeemed"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "id",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "index",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "drop",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "tokenIdentifier",
+        "internalType": "uint24",
+        "type": "uint24",
+        "indexed": false
+      },
+      {
+        "name": "probability",
+        "internalType": "uint24",
+        "type": "uint24",
+        "indexed": false
+      },
+      {
+        "name": "quantity",
+        "internalType": "uint24",
+        "type": "uint24",
+        "indexed": false
+      }
+    ],
+    "name": "MysteryBoxItemSet"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "id",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "funder",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "recipient",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "quantity",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "totalPrice",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "name": "MysteryBoxPurchased"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "id",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "requestId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "recipient",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "MysteryBoxRevealed"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "id",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "recipient",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "price",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "startDate",
+        "internalType": "uint64",
+        "type": "uint64",
+        "indexed": false
+      },
+      {
+        "name": "endDate",
+        "internalType": "uint64",
+        "type": "uint64",
+        "indexed": false
+      },
+      {
+        "name": "redemptions",
+        "internalType": "uint24",
+        "type": "uint24",
+        "indexed": false
+      }
+    ],
+    "name": "MysteryBoxSet"
+  }
+]

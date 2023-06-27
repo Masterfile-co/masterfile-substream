@@ -1,0 +1,86 @@
+[
+  {
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "inputs": [
+      { "name": "registry", "internalType": "address", "type": "address" },
+      { "name": "safeFactory_", "internalType": "address", "type": "address" },
+      { "name": "safeImpl_", "internalType": "address", "type": "address" }
+    ]
+  },
+  { "type": "error", "inputs": [], "name": "NotAuthorized" },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "channel",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "deployer",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "ChannelDeployed"
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "contractVersion",
+    "outputs": [{ "name": "", "internalType": "uint32", "type": "uint32" }]
+  },
+  {
+    "stateMutability": "nonpayable",
+    "type": "function",
+    "inputs": [
+      { "name": "initializer", "internalType": "bytes", "type": "bytes" },
+      { "name": "salt", "internalType": "uint256", "type": "uint256" }
+    ],
+    "name": "createChannel",
+    "outputs": [
+      { "name": "channel", "internalType": "address", "type": "address" }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "name",
+    "outputs": [{ "name": "", "internalType": "string", "type": "string" }]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "registry",
+    "outputs": [
+      { "name": "", "internalType": "contract IRegistry", "type": "address" }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "safeFactory",
+    "outputs": [
+      {
+        "name": "",
+        "internalType": "contract GnosisSafeProxyFactory",
+        "type": "address"
+      }
+    ]
+  },
+  {
+    "stateMutability": "view",
+    "type": "function",
+    "inputs": [],
+    "name": "safeImpl",
+    "outputs": [{ "name": "", "internalType": "address", "type": "address" }]
+  }
+]

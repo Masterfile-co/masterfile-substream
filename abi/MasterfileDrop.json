@@ -1,0 +1,178 @@
+[
+  { "type": "error", "inputs": [], "name": "DropConcluded" },
+  { "type": "error", "inputs": [], "name": "DropNotStarted" },
+  { "type": "error", "inputs": [], "name": "EditionMetadataFrozen" },
+  { "type": "error", "inputs": [], "name": "InvalidDropWindow" },
+  { "type": "error", "inputs": [], "name": "InvalidEdition" },
+  { "type": "error", "inputs": [], "name": "SoldOut" },
+  { "type": "error", "inputs": [], "name": "Unauthorized" },
+  { "type": "error", "inputs": [], "name": "UnmatchedListings" },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "creator",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "name",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      },
+      {
+        "name": "symbol",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      },
+      {
+        "name": "series",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      },
+      {
+        "name": "volume",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "name": "DropCreated"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "dropStartDate",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "dropEndDate",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "name": "DropSaleWindowSet"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "editionNumber",
+        "internalType": "uint24",
+        "type": "uint24",
+        "indexed": true
+      },
+      {
+        "name": "arweaveCID",
+        "internalType": "bytes32",
+        "type": "bytes32",
+        "indexed": true
+      },
+      {
+        "name": "recipient",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "EditionSet"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "editionNumber",
+        "internalType": "uint24",
+        "type": "uint24",
+        "indexed": true
+      },
+      {
+        "name": "quantity",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "price",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "name": "ListingSet"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "buyer",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "recipient",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "editionNumber",
+        "internalType": "uint24",
+        "type": "uint24",
+        "indexed": true
+      },
+      {
+        "name": "quantity",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "totalPrice",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "name": "PrimarySale"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "fromTokenId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "toTokenId",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      },
+      {
+        "name": "editionNumber",
+        "internalType": "uint24",
+        "type": "uint24",
+        "indexed": true
+      }
+    ],
+    "name": "TokenEditionSet"
+  }
+]

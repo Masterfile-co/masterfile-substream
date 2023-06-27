@@ -1,0 +1,27 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/streamingfast/substreams/develop/schemas/manifest-schema.json
+specVersion: v0.1.0
+package:
+  name: "masterfile_events"
+  version: v0.1.0
+
+protobuf:
+  files:
+    - registry.proto
+    - common.proto
+  importPaths:
+    - ./proto
+
+binaries:
+  default:
+    type: wasm/rust-v1
+    file: ./target/wasm32-unknown-unknown/release/masterfile_events.wasm
+
+modules:
+  - name: map_deployments
+    kind: map
+    initialBlock: 35103633
+    inputs:
+      - params: string
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:masterfile.registry.v1.Deployments

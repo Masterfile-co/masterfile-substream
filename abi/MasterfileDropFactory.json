@@ -1,0 +1,37 @@
+[
+  {
+    "stateMutability": "nonpayable",
+    "type": "constructor",
+    "inputs": [
+      { "name": "registry_", "internalType": "address", "type": "address" },
+      { "name": "dropImpl_", "internalType": "address", "type": "address" },
+      { "name": "conduit_", "internalType": "address", "type": "address" }
+    ]
+  },
+  { "type": "error", "inputs": [], "name": "NotChannel" },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "drop",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "channel",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "conduit",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      }
+    ],
+    "name": "DropDeployed"
+  }
+]
