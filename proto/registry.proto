@@ -4,30 +4,39 @@ import "common.proto";
 
 package masterfile.registry.v1;
 
-message Deployment {
-	string address = 1;
-	uint64 ordinal = 2;
-	oneof deploymentType {
-		Contract contract = 100;
-		Factory factory = 101;
-		Unknown unknownType = 102;
-	}
-	oneof contractType {
-		Channel channel = 200;
-		Drop drop = 201;
-		Split split = 202;
-		Unknown unknownContract = 203;
-	}
+message DeploymentType {
 
+	oneof type {
+		Contract contract = 1;
+		Factory factory = 2;
+		Unknown unknown = 3;
+	}
 
 	message Contract {}
 	message Factory {}
+	message Unknown {}
+}
+
+message ContractType {
+
+	oneof type {
+		Channel channel = 1;
+		Drop drop = 2;
+		Split split = 3;
+		Unknown unknown = 4;
+	}
 
 	message Channel {}
 	message Drop{}
 	message Split {}
-
 	message Unknown {}
+}
+
+message Deployment {
+	string address = 1;
+	uint64 ordinal = 2;
+	DeploymentType deploymentType =4;
+	ContractType contractType =5;
 }
 
 message Deployments {
@@ -42,19 +51,18 @@ message RegistryEvent {
 		RoleGranted roleGranted = 4;
 		RoleRevoked roleRevoked = 5;
 	}
-	string address = 100;
-	masterfile.common.v1.TransactionMetadata metadata = 101;
-	uint64 ordinal = 200;
 
 	message DeploymentAdded {
 		string deployment = 1;
 		string name = 2;
+		ContractType contractType = 3;
 	}
 	
 	message FactoryAdded {
 		string factory = 1;
 		string name = 2;
 		uint64 version = 3;
+		ContractType contractType = 4;
 	}
 	
 	message RoleAdminChanged {
@@ -74,6 +82,10 @@ message RegistryEvent {
 		string account = 2;
 		string sender = 3;
 	}
+
+	message Channel {}
+	message Drop{}
+	message Split {}
 }
 
 message RegistryEvents {

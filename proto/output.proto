@@ -4,6 +4,7 @@ import "common.proto";
 import "safe.proto";
 import "split.proto";
 import "drop.proto";
+import "registry.proto";
 
 package masterfile.events.v1;
 
@@ -15,7 +16,7 @@ message MasterfileEvent {
 		masterfile.safe.v1.SafeEvent safe = 10;
 		masterfile.split.v1.SplitEvent split = 11;
 		masterfile.drop.v1.DropEvent drop = 12;
-
+		masterfile.registry.v1.RegistryEvent registry = 99;
 	}
 	masterfile.common.v1.TransactionMetadata metadata = 101;
 	uint64 ordinal = 200;
