@@ -224,4 +224,30 @@ pub mod safe_event {
         SafeMsg(SafeMsg),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct ChannelFactoryEvent {
+    #[prost(string, tag="100")]
+    pub factory_address: ::prost::alloc::string::String,
+    #[prost(oneof="channel_factory_event::Event", tags="1")]
+    pub event: ::core::option::Option<channel_factory_event::Event>,
+}
+/// Nested message and enum types in `ChannelFactoryEvent`.
+pub mod channel_factory_event {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ChannelDeployed {
+        #[prost(string, tag="1")]
+        pub channel: ::prost::alloc::string::String,
+        /// uint64 version = 3;
+        #[prost(string, tag="2")]
+        pub deployer: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Event {
+        #[prost(message, tag="1")]
+        ChannelDeployed(ChannelDeployed),
+    }
+}
 // @@protoc_insertion_point(module)

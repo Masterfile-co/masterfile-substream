@@ -127,3 +127,16 @@ message SafeEvent {
 		string msgHash = 1;
 	}
 }
+
+message ChannelFactoryEvent {
+	oneof event {
+		ChannelDeployed channel_deployed = 1;
+	}
+	string factory_address = 100;
+
+	message ChannelDeployed {
+		string channel = 1;
+		string deployer = 2;
+		// uint64 version = 3;
+	}
+}

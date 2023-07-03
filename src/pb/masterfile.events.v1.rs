@@ -6,7 +6,7 @@ pub struct MasterfileEvent {
     pub metadata: ::core::option::Option<super::super::common::v1::TransactionMetadata>,
     #[prost(uint64, tag="200")]
     pub ordinal: u64,
-    #[prost(oneof="masterfile_event::Event", tags="1, 2, 3")]
+    #[prost(oneof="masterfile_event::Event", tags="1, 10, 11, 12")]
     pub event: ::core::option::Option<masterfile_event::Event>,
 }
 /// Nested message and enum types in `MasterfileEvent`.
@@ -15,10 +15,12 @@ pub mod masterfile_event {
 #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Event {
         #[prost(message, tag="1")]
+        ChannelFactory(super::super::super::safe::v1::ChannelFactoryEvent),
+        #[prost(message, tag="10")]
         Safe(super::super::super::safe::v1::SafeEvent),
-        #[prost(message, tag="2")]
+        #[prost(message, tag="11")]
         Split(super::super::super::split::v1::SplitEvent),
-        #[prost(message, tag="3")]
+        #[prost(message, tag="12")]
         Drop(super::super::super::drop::v1::DropEvent),
     }
 }

@@ -1,4 +1,5 @@
 pub mod abi;
+pub mod channel_factory;
 pub mod drop;
 pub mod pb;
 pub mod safe;
@@ -7,6 +8,7 @@ pub mod utils;
 
 use crate::utils::pretty_hex;
 use abi::Registry::events;
+use channel_factory::extract_channel_factory_event;
 use drop::extract_drop_event;
 use pb::masterfile::common::v1::TransactionMetadata;
 use pb::masterfile::drop::v1::DropEvent;
@@ -16,7 +18,7 @@ use pb::masterfile::registry::v1::{
     deployment::{Contract, ContractType, DeploymentType, Drop, Factory, Split, Unknown},
     Deployment, Deployments,
 };
-use pb::masterfile::safe::v1::SafeEvent;
+use pb::masterfile::safe::v1::{ChannelFactoryEvent, SafeEvent};
 use safe::extract_safe_event;
 use substreams::prelude::*;
 use substreams::{errors::Error, log, store::StoreSetProto, Hex};
@@ -70,6 +72,7 @@ fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Masterfi
     for log in block.logs() {
         let address = pretty_hex(&log.address());
         let metadata = extract_metadata(&log, &block);
+        let ordinal = log.block_index() as u64;
 
         // TODO: If registry
 
@@ -78,9 +81,16 @@ fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Masterfi
         if let Some(deployment) = store.get_last(&address) {
             match deployment.deployment_type.unwrap() {
                 DeploymentType::Factory(_) => match deployment.contract_type.unwrap() {
-                    ContractType::Channel(_) => {
-                        // TODO: Channel factory events
-                    }
+                    ContractType::Channel(_) => events.push(MasterfileEvent {
+                        event: Some(masterfile_event::Event::ChannelFactory(
+                            ChannelFactoryEvent {
+                                event: extract_channel_factory_event(&log),
+                                factory_address: address.clone(),
+                            },
+                        )),
+                        metadata,
+                        ordinal,
+                    }),
                     ContractType::Drop(_) => {
                         // TODO: Drop factory events
                     }
@@ -90,24 +100,21 @@ fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Masterfi
                     ContractType::UnknownContract(_) => {}
                 },
                 DeploymentType::Contract(_) => match deployment.contract_type.unwrap() {
-                    ContractType::Channel(_) => {
-                        // TODO: Channel events
-                        events.push(MasterfileEvent {
-                            event: Some(masterfile_event::Event::Safe(SafeEvent {
-                                event: extract_safe_event(&log),
-                                safe_address: address.clone(),
-                            })),
-                            ordinal: log.block_index() as u64,
-                            metadata,
-                        })
-                    }
+                    ContractType::Channel(_) => events.push(MasterfileEvent {
+                        event: Some(masterfile_event::Event::Safe(SafeEvent {
+                            event: extract_safe_event(&log),
+                            safe_address: address.clone(),
+                        })),
+                        ordinal,
+                        metadata,
+                    }),
                     ContractType::Drop(_) => {
                         events.push(MasterfileEvent {
                             event: Some(masterfile_event::Event::Drop(DropEvent {
                                 event: extract_drop_event(&log),
                                 drop_address: address.clone(),
                             })),
-                            ordinal: log.block_index() as u64,
+                            ordinal,
                             metadata,
                         });
                     }
