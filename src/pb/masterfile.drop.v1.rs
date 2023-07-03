@@ -165,4 +165,31 @@ pub mod drop_event {
         Transfer(Transfer),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct DropFactoryEvent {
+    #[prost(string, tag="100")]
+    pub factory_address: ::prost::alloc::string::String,
+    #[prost(oneof="drop_factory_event::Event", tags="1")]
+    pub event: ::core::option::Option<drop_factory_event::Event>,
+}
+/// Nested message and enum types in `DropFactoryEvent`.
+pub mod drop_factory_event {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct DropDeployed {
+        #[prost(string, tag="1")]
+        pub drop: ::prost::alloc::string::String,
+        #[prost(string, tag="2")]
+        pub channel: ::prost::alloc::string::String,
+        #[prost(string, tag="3")]
+        pub conduit: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Event {
+        #[prost(message, tag="1")]
+        DropDeployed(DropDeployed),
+    }
+}
 // @@protoc_insertion_point(module)

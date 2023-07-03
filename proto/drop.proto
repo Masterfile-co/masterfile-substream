@@ -100,3 +100,15 @@ message DropEvent {
 	}
 }
 
+message DropFactoryEvent {
+	oneof event {
+		DropDeployed drop_deployed = 1;
+	}
+	string factory_address = 100;
+
+	message DropDeployed {
+		string drop = 1;
+		string channel = 2;
+		string conduit = 3; 
+	}
+}

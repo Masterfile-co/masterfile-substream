@@ -103,4 +103,29 @@ pub mod split_event {
         UpdateSplit(UpdateSplit),
     }
 }
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct SplitFactoryEvent {
+    #[prost(string, tag="100")]
+    pub factory_address: ::prost::alloc::string::String,
+    #[prost(oneof="split_factory_event::Event", tags="1")]
+    pub event: ::core::option::Option<split_factory_event::Event>,
+}
+/// Nested message and enum types in `SplitFactoryEvent`.
+pub mod split_factory_event {
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct SplitDeployed {
+        #[prost(string, tag="1")]
+        pub split: ::prost::alloc::string::String,
+        #[prost(string, tag="2")]
+        pub channel: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Oneof)]
+    pub enum Event {
+        #[prost(message, tag="1")]
+        SplitDeployed(SplitDeployed),
+    }
+}
 // @@protoc_insertion_point(module)

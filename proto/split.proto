@@ -16,7 +16,6 @@ message SplitEvent {
 		// Withdrawl withdrawl = 8;
 	}
 
-
 	message CancelControlTransfer {
 		string split = 1;
 	}
@@ -61,6 +60,18 @@ message SplitEvent {
 	message SplitAllocation {
 		string account = 1;
 		uint64 percent_allocation = 2;
+	}
+}
+
+message SplitFactoryEvent {
+	oneof event {
+		SplitDeployed split_deployed = 1;
+	}
+	string factory_address = 100;
+
+	message SplitDeployed {
+		string split = 1;
+		string channel = 2;
 	}
 }
 

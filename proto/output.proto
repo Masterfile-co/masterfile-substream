@@ -10,7 +10,8 @@ package masterfile.events.v1;
 message MasterfileEvent {
 	oneof event {
 		masterfile.safe.v1.ChannelFactoryEvent channel_factory = 1;
-
+		masterfile.split.v1.SplitFactoryEvent split_factory = 2;
+		masterfile.drop.v1.DropFactoryEvent drop_factory = 3;
 		masterfile.safe.v1.SafeEvent safe = 10;
 		masterfile.split.v1.SplitEvent split = 11;
 		masterfile.drop.v1.DropEvent drop = 12;
