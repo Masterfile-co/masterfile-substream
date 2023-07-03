@@ -22,8 +22,9 @@ use pb::masterfile::registry::v1::{
     Deployment, Deployments,
 };
 use pb::masterfile::safe::v1::{ChannelFactoryEvent, SafeEvent};
-use pb::masterfile::split::v1::SplitFactoryEvent;
+use pb::masterfile::split::v1::{SplitEvent, SplitFactoryEvent};
 use safe::extract_safe_event;
+use split::extract_split_event;
 use split_factory::extract_split_factory_event;
 use substreams::prelude::*;
 use substreams::{errors::Error, log, store::StoreSetProto};
@@ -96,14 +97,18 @@ fn map_events(
         if address == registry_address {
             log::info!("Registry event: {:?}", log.address());
         }
-
-        // TODO: If split main
-        if address == split_main_address {
-            log::info!("SplitMain event: {:?}", log.address());
+        // All Split events emitted from split main contract
+        else if address == split_main_address {
+            events.push(MasterfileEvent {
+                event: Some(masterfile_event::Event::Split(SplitEvent {
+                    event: extract_split_event(log, &store),
+                })),
+                metadata,
+                ordinal,
+            })
         }
-
         // If Events coming from deployed factory or implementation
-        if let Some(deployment) = store.get_last(&address) {
+        else if let Some(deployment) = store.get_last(&address) {
             match deployment.deployment_type.unwrap() {
                 DeploymentType::Factory(_) => match deployment.contract_type.unwrap() {
                     ContractType::Channel(_) => events.push(MasterfileEvent {
