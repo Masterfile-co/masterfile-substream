@@ -40,7 +40,8 @@ modules:
   - name: map_events
     kind: map
     inputs:
-      - source: sf.ethereum.type.v2.Block
+      - params: string
       - store: store_deployments
+      - source: sf.ethereum.type.v2.Block
     output:
       type: proto:masterfile.events.v1.MasterfileEvents

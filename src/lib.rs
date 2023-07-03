@@ -26,7 +26,7 @@ use pb::masterfile::split::v1::SplitFactoryEvent;
 use safe::extract_safe_event;
 use split_factory::extract_split_factory_event;
 use substreams::prelude::*;
-use substreams::{errors::Error, log, store::StoreSetProto, Hex};
+use substreams::{errors::Error, log, store::StoreSetProto};
 use substreams_ethereum::block_view::LogView;
 use substreams_ethereum::{pb::eth::v2::Block, Event};
 
@@ -34,10 +34,10 @@ use substreams_ethereum::{pb::eth::v2::Block, Event};
 fn map_deployments(param: String, block: Block) -> Result<Deployments, Error> {
     let mut deployments = vec![];
 
-    let factory_address = &Hex::decode(&param).unwrap();
+    let factory_address = param.to_lowercase();
 
     for log in block.logs() {
-        if log.address() == factory_address {
+        if pretty_hex(&log.address()) == factory_address {
             if let Some(event) = events::FactoryAdded::match_and_decode(log) {
                 log::info!("FactoryAdded: {:?}", pretty_hex(&event.name));
                 deployments.push(Deployment {
@@ -71,7 +71,20 @@ fn store_deployments(deployments: Deployments, store: StoreSetProto<Deployment>)
 }
 
 #[substreams::handlers::map]
-fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<MasterfileEvents, Error> {
+fn map_events(
+    param: String,
+    store: StoreGetProto<Deployment>,
+    block: Block,
+) -> Result<MasterfileEvents, Error> {
+    let addr = param.split("&&").collect::<Vec<&str>>();
+
+    if addr.len() != 2 {
+        panic!("Invalid param")
+    }
+
+    let registry_address = addr[0].to_lowercase();
+    let split_main_address = addr[1].to_lowercase();
+
     let mut events = vec![];
 
     for log in block.logs() {
@@ -80,9 +93,16 @@ fn map_events(block: Block, store: StoreGetProto<Deployment>) -> Result<Masterfi
         let ordinal = log.block_index() as u64;
 
         // TODO: If registry
+        if address == registry_address {
+            log::info!("Registry event: {:?}", log.address());
+        }
 
         // TODO: If split main
+        if address == split_main_address {
+            log::info!("SplitMain event: {:?}", log.address());
+        }
 
+        // If Events coming from deployed factory or implementation
         if let Some(deployment) = store.get_last(&address) {
             match deployment.deployment_type.unwrap() {
                 DeploymentType::Factory(_) => match deployment.contract_type.unwrap() {
