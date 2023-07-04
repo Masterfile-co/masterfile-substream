@@ -93,14 +93,14 @@ pub mod safe_event {
         #[prost(string, tag="1")]
         pub module: ::prost::alloc::string::String,
         #[prost(string, tag="2")]
-        pub safe_tx_to: ::prost::alloc::string::String,
+        pub to: ::prost::alloc::string::String,
         #[prost(string, tag="3")]
-        pub safe_tx_value: ::prost::alloc::string::String,
+        pub value: ::prost::alloc::string::String,
         #[prost(string, tag="4")]
-        pub safe_tx_data: ::prost::alloc::string::String,
+        pub data: ::prost::alloc::string::String,
         /// Maybe decode this into enum
-        #[prost(uint32, tag="5")]
-        pub operation: u32,
+        #[prost(uint64, tag="5")]
+        pub operation: u64,
         #[prost(oneof="safe_module_transaction::Result", tags="6, 7")]
         pub result: ::core::option::Option<safe_module_transaction::Result>,
     }

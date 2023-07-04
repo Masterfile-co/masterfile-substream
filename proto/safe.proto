@@ -76,10 +76,10 @@ message SafeEvent {
 	
 	message SafeModuleTransaction {
 		string module = 1;
-		string safe_tx_to = 2;
-		string safe_tx_value = 3;
-		string safe_tx_data = 4;
-		uint32 operation = 5; // Maybe decode this into enum
+		string to = 2;
+		string value = 3;
+		string data = 4;
+		uint64 operation = 5; // Maybe decode this into enum
 		oneof result {
 			ExecutionFromModuleFailure execution_failure = 6;
 			ExecutionFromModuleSuccess execution_success = 7;

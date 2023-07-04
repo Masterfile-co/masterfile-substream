@@ -19,7 +19,7 @@ use modules::extract_mystery_box_module_event;
 use pb::masterfile::mystery_box::v1::MysteryBoxModuleEvent;
 use pb::masterfile::registry::v1::{contract_type, Module, Modules, RegistryEvent};
 use registry::{extract_registry_events, map_contract_type};
-use safe::extract_safe_event;
+use safe::{extract_safe_event, hydrate_tx_results};
 use split::extract_split_event;
 use split_factory::extract_split_factory_event;
 use utils::{extract_metadata, pretty_hex};
@@ -37,14 +37,29 @@ use substreams::prelude::*;
 use substreams::{errors::Error, log, store::StoreSetProto};
 use substreams_ethereum::{pb::eth::v2::Block, Event};
 
+use serde::{Deserialize, Serialize};
+use serde_qs;
+
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
+struct MapDeploymentsParams {
+    registry_address: String,
+}
+
+#[derive(Debug, PartialEq, Deserialize, Serialize)]
+struct MapEventsParams {
+    registry_address: String,
+    split_main_address: String,
+    chain_id: u64,
+}
+
 #[substreams::handlers::map]
 fn map_deployments(param: String, block: Block) -> Result<Deployments, Error> {
     let mut deployments = vec![];
 
-    let factory_address = param.to_lowercase();
+    let deployment_params: MapDeploymentsParams = serde_qs::from_str(&param).unwrap();
 
     for log in block.logs() {
-        if pretty_hex(&log.address()) == factory_address {
+        if pretty_hex(&log.address()) == deployment_params.registry_address {
             if let Some(event) = events::FactoryAdded::match_and_decode(log) {
                 log::info!("FactoryAdded: {:?}", pretty_hex(&event.name));
                 deployments.push(Deployment {
@@ -75,7 +90,6 @@ fn map_deployments(param: String, block: Block) -> Result<Deployments, Error> {
 
 #[substreams::handlers::store]
 fn store_deployments(deployments: Deployments, store: StoreSetProto<Deployment>) {
-    log::info!("Deployments: {:?}", deployments);
     for deployment in deployments.deployments {
         store.set(deployment.ordinal, &deployment.address, &deployment);
     }
@@ -120,14 +134,7 @@ fn map_events(
     modules: StoreGetProto<Module>,
     block: Block,
 ) -> Result<MasterfileEvents, Error> {
-    let addr = param.split("&&").collect::<Vec<&str>>();
-
-    if addr.len() != 2 {
-        panic!("Invalid param")
-    }
-
-    let registry_address = addr[0].to_lowercase();
-    let split_main_address = addr[1].to_lowercase();
+    let events_params: MapEventsParams = serde_qs::from_str(&param).unwrap();
 
     let mut events = vec![];
 
@@ -137,7 +144,7 @@ fn map_events(
         let ordinal = log.block_index() as u64;
 
         // TODO: If registry
-        if address == registry_address {
+        if address == events_params.registry_address {
             events.push(MasterfileEvent {
                 metadata,
                 ordinal,
@@ -147,7 +154,7 @@ fn map_events(
             })
         }
         // All Split events emitted from split main contract
-        else if address == split_main_address {
+        else if address == events_params.split_main_address {
             events.push(MasterfileEvent {
                 event: Some(masterfile_event::Event::Split(SplitEvent {
                     event: extract_split_event(log, &deployments),
@@ -192,14 +199,21 @@ fn map_events(
                 }
                 deployment_type::Type::Contract(_) => {
                     match deployment.contract_type.unwrap().r#type.unwrap() {
-                        contract_type::Type::Channel(_) => events.push(MasterfileEvent {
-                            event: Some(masterfile_event::Event::Safe(SafeEvent {
-                                event: extract_safe_event(&log),
-                                safe_address: address.clone(),
-                            })),
-                            ordinal,
-                            metadata,
-                        }),
+                        contract_type::Type::Channel(_) => {
+                            // Find gnosis safe events
+                            if let Some(event) = extract_safe_event(&log, &events_params.chain_id) {
+                                events.push(MasterfileEvent {
+                                    event: Some(masterfile_event::Event::Safe(SafeEvent {
+                                        event: Some(event),
+                                        safe_address: address.clone(),
+                                    })),
+                                    ordinal,
+                                    metadata,
+                                })
+                            }
+                            // Add results for each safe transaction
+                            hydrate_tx_results(&log, &mut events);
+                        }
                         contract_type::Type::Drop(_) => {
                             events.push(MasterfileEvent {
                                 event: Some(masterfile_event::Event::Drop(DropEvent {

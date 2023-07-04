@@ -13,7 +13,7 @@ tasks:
     cmds:
       - task: proto
       - task: build
-      - substreams run -e mumbai.streamingfast.io:443 substreams.yaml map_events --production-mode --start-block 35103633 --stop-block 35111602 -p map_deployments=0x2b6bB12978a7d8b2b109cD41433bd8Dc822d8B47 -p map_events="0x2b6bB12978a7d8b2b109cD41433bd8Dc822d8B47&&0x2ed6c4B5dA6378c7897AC67Ba9e43102Feb694EE"
+      - substreams run -e mumbai.streamingfast.io:443 substreams.yaml map_events --start-block 35103633 --stop-block 35111602 -p map_deployments="registry_address=0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47" -p map_events="registry_address=0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47&split_main_address=0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee&chain_id=80001"
 
   pack:
     cmds:
@@ -21,4 +21,4 @@ tasks:
 
   run:pack:
     cmds:
-      - substreams run -e mumbai.streamingfast.io:443 masterfile-events-v0.1.0.spkg map_events --production-mode --start-block 35103633 --stop-block 37369482 -p map_deployments=0x2b6bB12978a7d8b2b109cD41433bd8Dc822d8B47 -p map_events="0x2b6bB12978a7d8b2b109cD41433bd8Dc822d8B47&&0x2ed6c4B5dA6378c7897AC67Ba9e43102Feb694EE"
+      - substreams run -e mumbai.streamingfast.io:443 masterfile-events-v0.1.0.spkg map_events --production-mode --start-block 35103633 --stop-block 37369482 -p map_deployments="registry_address=0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47" -p map_events="registry_address=0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47&split_main_address=0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee&chain_id=80001"
