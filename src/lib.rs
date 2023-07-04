@@ -15,7 +15,9 @@ use abi::Registry::events;
 use channel_factory::extract_channel_factory_event;
 use drop::extract_drop_event;
 use drop_factory::extract_drop_factory_event;
-use pb::masterfile::registry::v1::{contract_type, ContractType, Module, Modules, RegistryEvent};
+use modules::extract_mystery_box_module_event;
+use pb::masterfile::mystery_box::v1::MysteryBoxModuleEvent;
+use pb::masterfile::registry::v1::{contract_type, Module, Modules, RegistryEvent};
 use registry::{extract_registry_events, map_contract_type};
 use safe::extract_safe_event;
 use split::extract_split_event;
@@ -87,16 +89,15 @@ fn map_modules(store: StoreGetProto<Deployment>, block: Block) -> Result<Modules
         let address = pretty_hex(&log.address());
 
         if let Some(deployment) = store.get_last(&address) {
-            match deployment.contract_type.unwrap().r#type.unwrap() {
-                contract_type::Type::Channel(_) => {
-                    if let Some(event) = EnabledModule::match_and_decode(log) {
-                        modules.push(Module {
-                            address: pretty_hex(&event.module),
-                            ordinal: log.block_index() as u64,
-                        })
-                    }
+            if let contract_type::Type::Channel(_) =
+                deployment.contract_type.unwrap().r#type.unwrap()
+            {
+                if let Some(event) = EnabledModule::match_and_decode(log) {
+                    modules.push(Module {
+                        address: pretty_hex(&event.module),
+                        ordinal: log.block_index() as u64,
+                    })
                 }
-                _ => {}
             }
         }
     }
@@ -219,8 +220,20 @@ fn map_events(
                 }
                 deployment_type::Type::Unknown(_) => {}
             }
-        } else if let Some(module) = modules.get_last(&address) {
+        } else if let Some(_) = modules.get_last(&address) {
             // Extract mystery box module event
+            if let Some(event) = extract_mystery_box_module_event(&log) {
+                events.push(MasterfileEvent {
+                    event: Some(masterfile_event::Event::MysteryBoxModule(
+                        MysteryBoxModuleEvent {
+                            event: Some(event),
+                            module_address: address.clone(),
+                        },
+                    )),
+                    ordinal,
+                    metadata,
+                })
+            }
         }
     }
 

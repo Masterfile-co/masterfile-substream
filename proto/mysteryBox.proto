@@ -23,9 +23,9 @@ message MysteryBoxModuleEvent {
 		string id = 1;
 		uint64 index = 2;
 		string drop = 3;
-		uint32 tokenIdentifier = 4;
-		uint32 probability = 5;
-		uint32 quantity = 6;
+		uint64 tokenIdentifier = 4;
+		uint64 probability = 5;
+		uint64 quantity = 6;
 	}
 
 	message MysteryBoxPurchased {
@@ -48,6 +48,6 @@ message MysteryBoxModuleEvent {
 		string price = 3;
 		uint64 startDate = 4;
 		uint64 endDate = 5;
-		uint32 redemptions = 6;
+		uint64 redemptions = 6;
 	}
 }

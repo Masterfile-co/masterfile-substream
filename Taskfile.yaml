@@ -14,3 +14,11 @@ tasks:
       - task: proto
       - task: build
       - substreams run -e mumbai.streamingfast.io:443 substreams.yaml map_events --production-mode --start-block 35103633 --stop-block 35111602 -p map_deployments=0x2b6bB12978a7d8b2b109cD41433bd8Dc822d8B47 -p map_events="0x2b6bB12978a7d8b2b109cD41433bd8Dc822d8B47&&0x2ed6c4B5dA6378c7897AC67Ba9e43102Feb694EE"
+
+  pack:
+    cmds:
+      - substreams pack ./substreams.yaml
+
+  run:pack:
+    cmds:
+      - substreams run -e mumbai.streamingfast.io:443 masterfile-events-v0.1.0.spkg map_events --production-mode --start-block 35103633 --stop-block 37369482 -p map_deployments=0x2b6bB12978a7d8b2b109cD41433bd8Dc822d8B47 -p map_events="0x2b6bB12978a7d8b2b109cD41433bd8Dc822d8B47&&0x2ed6c4B5dA6378c7897AC67Ba9e43102Feb694EE"

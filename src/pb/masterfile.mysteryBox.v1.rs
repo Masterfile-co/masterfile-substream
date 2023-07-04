@@ -30,12 +30,12 @@ pub mod mystery_box_module_event {
         pub index: u64,
         #[prost(string, tag="3")]
         pub drop: ::prost::alloc::string::String,
-        #[prost(uint32, tag="4")]
-        pub token_identifier: u32,
-        #[prost(uint32, tag="5")]
-        pub probability: u32,
-        #[prost(uint32, tag="6")]
-        pub quantity: u32,
+        #[prost(uint64, tag="4")]
+        pub token_identifier: u64,
+        #[prost(uint64, tag="5")]
+        pub probability: u64,
+        #[prost(uint64, tag="6")]
+        pub quantity: u64,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -74,8 +74,8 @@ pub mod mystery_box_module_event {
         pub start_date: u64,
         #[prost(uint64, tag="5")]
         pub end_date: u64,
-        #[prost(uint32, tag="6")]
-        pub redemptions: u32,
+        #[prost(uint64, tag="6")]
+        pub redemptions: u64,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Oneof)]
