@@ -12,6 +12,7 @@ protobuf:
     - output.proto
     - split.proto
     - drop.proto
+    - mysteryBox.proto
   importPaths:
     - ./proto
 
@@ -37,11 +38,27 @@ modules:
     inputs:
       - map: map_deployments
 
+  - name: map_modules
+    kind: map
+    inputs:
+      - store: store_deployments
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:masterfile.registry.v1.Modules
+
+  - name: store_modules
+    kind: store
+    updatePolicy: set
+    valueType: proto:masterfile.registry.v1.Module
+    inputs:
+      - map: map_modules
+
   - name: map_events
     kind: map
     inputs:
       - params: string
       - store: store_deployments
+      - store: store_modules
       - source: sf.ethereum.type.v2.Block
     output:
       type: proto:masterfile.events.v1.MasterfileEvents

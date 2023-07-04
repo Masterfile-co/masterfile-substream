@@ -5,6 +5,7 @@ import "safe.proto";
 import "split.proto";
 import "drop.proto";
 import "registry.proto";
+import "mysteryBox.proto";
 
 package masterfile.events.v1;
 
@@ -17,6 +18,7 @@ message MasterfileEvent {
 		masterfile.split.v1.SplitEvent split = 11;
 		masterfile.drop.v1.DropEvent drop = 12;
 		masterfile.registry.v1.RegistryEvent registry = 99;
+		masterfile.mysteryBox.v1.MysteryBoxModuleEvent mystery_box_module = 100;
 	}
 	masterfile.common.v1.TransactionMetadata metadata = 101;
 	uint64 ordinal = 200;

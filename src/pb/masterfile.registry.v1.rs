@@ -87,6 +87,20 @@ pub struct Deployments {
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Module {
+    #[prost(string, tag="1")]
+    pub address: ::prost::alloc::string::String,
+    #[prost(uint64, tag="2")]
+    pub ordinal: u64,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+pub struct Modules {
+    #[prost(message, repeated, tag="1")]
+    pub modules: ::prost::alloc::vec::Vec<Module>,
+}
+#[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
 pub struct RegistryEvent {
     #[prost(oneof="registry_event::Event", tags="1, 2, 3, 4, 5")]
     pub event: ::core::option::Option<registry_event::Event>,

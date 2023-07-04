@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "common.proto";
-
 package masterfile.registry.v1;
 
 message DeploymentType {
@@ -41,6 +39,15 @@ message Deployment {
 
 message Deployments {
 	repeated Deployment deployments = 1;
+}
+
+message Module {
+	string address = 1;
+	uint64 ordinal = 2;
+}
+
+message Modules {
+	repeated Module modules = 1;
 }
 
 message RegistryEvent {

@@ -21,6 +21,13 @@ pub mod masterfile {
             // @@protoc_insertion_point(masterfile.events.v1)
         }
     }
+    pub mod mystery_box {
+        // @@protoc_insertion_point(attribute:masterfile.mysteryBox.v1)
+        pub mod v1 {
+            include!("masterfile.mysteryBox.v1.rs");
+            // @@protoc_insertion_point(masterfile.mysteryBox.v1)
+        }
+    }
     pub mod registry {
         // @@protoc_insertion_point(attribute:masterfile.registry.v1)
         pub mod v1 {

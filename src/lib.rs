@@ -2,6 +2,7 @@ pub mod abi;
 pub mod channel_factory;
 pub mod drop;
 pub mod drop_factory;
+pub mod modules;
 pub mod pb;
 pub mod registry;
 pub mod safe;
@@ -9,11 +10,12 @@ pub mod split;
 pub mod split_factory;
 pub mod utils;
 
+use abi::GnosisSafeL2::events::EnabledModule;
 use abi::Registry::events;
 use channel_factory::extract_channel_factory_event;
 use drop::extract_drop_event;
 use drop_factory::extract_drop_factory_event;
-use pb::masterfile::registry::v1::{contract_type, RegistryEvent};
+use pb::masterfile::registry::v1::{contract_type, ContractType, Module, Modules, RegistryEvent};
 use registry::{extract_registry_events, map_contract_type};
 use safe::extract_safe_event;
 use split::extract_split_event;
@@ -78,9 +80,43 @@ fn store_deployments(deployments: Deployments, store: StoreSetProto<Deployment>)
 }
 
 #[substreams::handlers::map]
+fn map_modules(store: StoreGetProto<Deployment>, block: Block) -> Result<Modules, Error> {
+    let mut modules = vec![];
+
+    for log in block.logs() {
+        let address = pretty_hex(&log.address());
+
+        if let Some(deployment) = store.get_last(&address) {
+            match deployment.contract_type.unwrap().r#type.unwrap() {
+                contract_type::Type::Channel(_) => {
+                    if let Some(event) = EnabledModule::match_and_decode(log) {
+                        modules.push(Module {
+                            address: pretty_hex(&event.module),
+                            ordinal: log.block_index() as u64,
+                        })
+                    }
+                }
+                _ => {}
+            }
+        }
+    }
+
+    Ok(Modules { modules })
+}
+
+#[substreams::handlers::store]
+fn store_modules(deployments: Deployments, store: StoreSetProto<Deployment>) {
+    log::info!("Deployments: {:?}", deployments);
+    for deployment in deployments.deployments {
+        store.set(deployment.ordinal, &deployment.address, &deployment);
+    }
+}
+
+#[substreams::handlers::map]
 fn map_events(
     param: String,
-    store: StoreGetProto<Deployment>,
+    deployments: StoreGetProto<Deployment>,
+    modules: StoreGetProto<Module>,
     block: Block,
 ) -> Result<MasterfileEvents, Error> {
     let addr = param.split("&&").collect::<Vec<&str>>();
@@ -113,14 +149,14 @@ fn map_events(
         else if address == split_main_address {
             events.push(MasterfileEvent {
                 event: Some(masterfile_event::Event::Split(SplitEvent {
-                    event: extract_split_event(log, &store),
+                    event: extract_split_event(log, &deployments),
                 })),
                 metadata,
                 ordinal,
             })
         }
         // If Events coming from deployed factory or implementation
-        else if let Some(deployment) = store.get_last(&address) {
+        else if let Some(deployment) = deployments.get_last(&address) {
             match deployment.deployment_type.unwrap().r#type.unwrap() {
                 deployment_type::Type::Factory(_) => {
                     match deployment.contract_type.unwrap().r#type.unwrap() {
@@ -183,6 +219,8 @@ fn map_events(
                 }
                 deployment_type::Type::Unknown(_) => {}
             }
+        } else if let Some(module) = modules.get_last(&address) {
+            // Extract mystery box module event
         }
     }
 

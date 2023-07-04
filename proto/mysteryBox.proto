@@ -1,0 +1,53 @@
+syntax = "proto3";
+
+package masterfile.mysteryBox.v1;
+
+message MysteryBoxModuleEvent {
+	oneof event {
+		MysteryBoxItemRedeemed mystery_box_item_redeemed = 1;
+		MysteryBoxItemSet mystery_box_item_set = 2;
+		MysteryBoxPurchased mystery_box_purchased = 3;
+		MysteryBoxRevealed mystery_box_revealed = 4;
+		MysteryBoxSet mystery_box_set = 5;
+	}
+	string module_address = 101;
+
+	message MysteryBoxItemRedeemed {
+		string id = 1;
+		string requestId = 2;
+		string recipient = 3;
+		uint64 itemIndex = 4;
+	}
+
+	message MysteryBoxItemSet {
+		string id = 1;
+		uint64 index = 2;
+		string drop = 3;
+		uint32 tokenIdentifier = 4;
+		uint32 probability = 5;
+		uint32 quantity = 6;
+	}
+
+	message MysteryBoxPurchased {
+		string id = 1;
+		string funder = 2;
+		string recipient = 3;
+		string quantity = 4;
+		string totalPrice = 5;
+	}
+
+	message MysteryBoxRevealed {
+		string id = 1;
+		string requestId = 2;
+		string recipient = 3;
+	}
+
+	message MysteryBoxSet {
+		string id = 1;
+		string recipient = 2;
+		string price = 3;
+		uint64 startDate = 4;
+		uint64 endDate = 5;
+		uint32 redemptions = 6;
+	}
+}

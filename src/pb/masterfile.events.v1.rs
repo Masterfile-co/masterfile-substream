@@ -6,7 +6,7 @@ pub struct MasterfileEvent {
     pub metadata: ::core::option::Option<super::super::common::v1::TransactionMetadata>,
     #[prost(uint64, tag="200")]
     pub ordinal: u64,
-    #[prost(oneof="masterfile_event::Event", tags="1, 2, 3, 10, 11, 12, 99")]
+    #[prost(oneof="masterfile_event::Event", tags="1, 2, 3, 10, 11, 12, 99, 100")]
     pub event: ::core::option::Option<masterfile_event::Event>,
 }
 /// Nested message and enum types in `MasterfileEvent`.
@@ -28,6 +28,8 @@ pub mod masterfile_event {
         Drop(super::super::super::drop::v1::DropEvent),
         #[prost(message, tag="99")]
         Registry(super::super::super::registry::v1::RegistryEvent),
+        #[prost(message, tag="100")]
+        MysteryBoxModule(super::super::super::mystery_box::v1::MysteryBoxModuleEvent),
     }
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
