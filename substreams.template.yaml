@@ -14,7 +14,7 @@ protobuf:
     - drop.proto
     - mysteryBox.proto
   importPaths:
-    - ./proto
+    - ./proto/v1
 
 binaries:
   default:
