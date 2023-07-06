@@ -1,7 +1,7 @@
 # yaml-language-server: $schema=https://raw.githubusercontent.com/streamingfast/substreams/develop/schemas/manifest-schema.json
 specVersion: v0.1.0
 package:
-  name: "masterfile_events"
+  name: "masterfile_events_{{env}}"
   version: v0.1.0
 
 protobuf:
@@ -24,7 +24,7 @@ binaries:
 modules:
   - name: map_deployments
     kind: map
-    initialBlock: 35103633
+    initialBlock: {{initialBlock}}
     inputs:
       - params: string
       - source: sf.ethereum.type.v2.Block

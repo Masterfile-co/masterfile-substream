@@ -1,11 +1,28 @@
 version: 3
 
 tasks:
+  prepare:
+    cmds:
+      - npx -y mustache config/{{.ENV}}.json substreams.template.yaml > substreams.yaml
+
+  prepare:dev:
+    cmds:
+      - task: prepare
+        vars:
+          ENV: dev
+
+  prepare:stg:
+    cmds:
+      - task: prepare
+        vars:
+          ENV: stg
+
   proto:
     cmds:
       - substreams protogen ./substreams.yaml --exclude-paths="sf/substreams,google"
 
   build:
+    internal: true
     cmds:
       - cargo build --release --target wasm32-unknown-unknown
 
@@ -13,12 +30,72 @@ tasks:
     cmds:
       - task: proto
       - task: build
-      - substreams run -e mumbai.streamingfast.io:443 substreams.yaml map_events --start-block 35103633 --stop-block 35111602 -p map_deployments="registry_address=0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47" -p map_events="registry_address=0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47&split_main_address=0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee&chain_id=80001"
+      - substreams run -e {{.FIREHOSE_URL}} ./substreams.yaml map_events --production-mode --start-block {{.START_BLOCK}} --stop-block {{.STOP_BLOCK}} -p map_deployments="registry_address={{.REGISTRY_ADDRESS}}" -p map_events="registry_address={{.REGISTRY_ADDRESS}}&split_main_address={{.SPLIT_MAIN_ADDRESS}}&chain_id={{.CHAIN_ID}}"
+
+  run:dev:
+    cmds:
+      - task: run
+        vars:
+          FIREHOSE_URL: mumbai.streamingfast.io:443
+          START_BLOCK: 35103633
+          STOP_BLOCK: 35111602
+          REGISTRY_ADDRESS: "0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47"
+          SPLIT_MAIN_ADDRESS: "0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee"
+          CHAIN_ID: 80001
+
+  run:stg:
+    cmds:
+      - task: run
+        vars:
+          FIREHOSE_URL: polygon.streamingfast.io:443
+          START_BLOCK: 42547094
+          STOP_BLOCK: 42647094
+          REGISTRY_ADDRESS: "0x04fc95cc0071aafa1ca1de54df5e6f530c5ecb55"
+          SPLIT_MAIN_ADDRESS: "0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee"
+          CHAIN_ID: 137
 
   pack:
     cmds:
       - substreams pack ./substreams.yaml
 
-  run:pack:
+  build:dev:
     cmds:
-      - substreams run -e mumbai.streamingfast.io:443 masterfile-events-v0.1.0.spkg map_events --production-mode --start-block 35103633 --stop-block 37369482 -p map_deployments="registry_address=0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47" -p map_events="registry_address=0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47&split_main_address=0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee&chain_id=80001"
+      - task: prepare:dev
+      - task: proto
+      - task: build
+      - task: pack
+
+  build:stg:
+    cmds:
+      - task: prepare:stg
+      - task: proto
+      - task: build
+      - task: pack
+
+  start:
+    cmds:
+      - substreams run -e {{.FIREHOSE_URL}} ./masterfile-events-{{.ENV}}-v0.1.0.spkg map_events --production-mode --start-block {{.START_BLOCK}} --stop-block {{.STOP_BLOCK}} -p map_deployments="registry_address={{.REGISTRY_ADDRESS}}" -p map_events="registry_address={{.REGISTRY_ADDRESS}}&split_main_address={{.SPLIT_MAIN_ADDRESS}}&chain_id={{.CHAIN_ID}}"
+
+  start:dev:
+    cmds:
+      - task: start
+        vars:
+          FIREHOSE_URL: mumbai.streamingfast.io:443
+          START_BLOCK: 35103633
+          STOP_BLOCK: 35250000
+          REGISTRY_ADDRESS: "0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47"
+          SPLIT_MAIN_ADDRESS: "0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee"
+          CHAIN_ID: 80001
+          ENV: dev
+
+  start:stg:
+    cmds:
+      - task: start
+        vars:
+          FIREHOSE_URL: polygon.streamingfast.io:443
+          START_BLOCK: 42547094
+          STOP_BLOCK: 44691328
+          REGISTRY_ADDRESS: "0x04fc95cc0071aafa1ca1de54df5e6f530c5ecb55"
+          SPLIT_MAIN_ADDRESS: "0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee"
+          CHAIN_ID: 137
+          ENV: stg
