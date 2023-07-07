@@ -82,7 +82,7 @@ tasks:
         vars:
           FIREHOSE_URL: mumbai.streamingfast.io:443
           START_BLOCK: 35103633
-          STOP_BLOCK: 35250000
+          STOP_BLOCK: 35350000
           REGISTRY_ADDRESS: "0x2b6bb12978a7d8b2b109cd41433bd8dc822d8b47"
           SPLIT_MAIN_ADDRESS: "0x2ed6c4b5da6378c7897ac67ba9e43102feb694ee"
           CHAIN_ID: 80001
