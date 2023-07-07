@@ -9,6 +9,9 @@ message MysteryBoxModuleEvent {
 		MysteryBoxPurchased mystery_box_purchased = 3;
 		MysteryBoxRevealed mystery_box_revealed = 4;
 		MysteryBoxSet mystery_box_set = 5;
+		ApprovalForAll approval_for_all = 6;
+		TransferSingle transfer_single = 7;
+		TransferBatch transfer_batch = 8;
 	}
 	string module_address = 101;
 
@@ -49,5 +52,27 @@ message MysteryBoxModuleEvent {
 		uint64 startDate = 4;
 		uint64 endDate = 5;
 		uint64 redemptions = 6;
+	}
+
+	message ApprovalForAll {
+		string owner = 1;
+		string operator = 2;
+		bool approved = 3;
+	}
+
+	message TransferSingle {
+		string operator = 1;
+		string from = 2;
+		string to = 3;
+		string id = 4;
+		string amount = 5;
+	}
+
+	message TransferBatch {
+		string operator = 1;
+		string from = 2;
+		string to = 3;
+		repeated string ids = 4;
+		repeated string amounts = 5;
 	}
 }

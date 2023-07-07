@@ -13,6 +13,56 @@
     "anonymous": false,
     "inputs": [
       {
+        "name": "owner",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "operator",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "approved",
+        "internalType": "bool",
+        "type": "bool",
+        "indexed": false
+      }
+    ],
+    "name": "ApprovalForAll"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "userAddress",
+        "internalType": "address",
+        "type": "address",
+        "indexed": false
+      },
+      {
+        "name": "relayerAddress",
+        "internalType": "address payable",
+        "type": "address",
+        "indexed": false
+      },
+      {
+        "name": "functionSignature",
+        "internalType": "bytes",
+        "type": "bytes",
+        "indexed": false
+      }
+    ],
+    "name": "MetaTransactionExecuted"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
         "name": "id",
         "internalType": "uint256",
         "type": "uint256",
@@ -186,5 +236,98 @@
       }
     ],
     "name": "MysteryBoxSet"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "operator",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "from",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "to",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "ids",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      },
+      {
+        "name": "amounts",
+        "internalType": "uint256[]",
+        "type": "uint256[]",
+        "indexed": false
+      }
+    ],
+    "name": "TransferBatch"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "operator",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "from",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "to",
+        "internalType": "address",
+        "type": "address",
+        "indexed": true
+      },
+      {
+        "name": "id",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      },
+      {
+        "name": "amount",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": false
+      }
+    ],
+    "name": "TransferSingle"
+  },
+  {
+    "type": "event",
+    "anonymous": false,
+    "inputs": [
+      {
+        "name": "value",
+        "internalType": "string",
+        "type": "string",
+        "indexed": false
+      },
+      {
+        "name": "id",
+        "internalType": "uint256",
+        "type": "uint256",
+        "indexed": true
+      }
+    ],
+    "name": "URI"
   }
 ]

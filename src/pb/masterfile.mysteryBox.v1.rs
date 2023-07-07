@@ -4,7 +4,7 @@
 pub struct MysteryBoxModuleEvent {
     #[prost(string, tag="101")]
     pub module_address: ::prost::alloc::string::String,
-    #[prost(oneof="mystery_box_module_event::Event", tags="1, 2, 3, 4, 5")]
+    #[prost(oneof="mystery_box_module_event::Event", tags="1, 2, 3, 4, 5, 6, 7, 8")]
     pub event: ::core::option::Option<mystery_box_module_event::Event>,
 }
 /// Nested message and enum types in `MysteryBoxModuleEvent`.
@@ -78,6 +78,44 @@ pub mod mystery_box_module_event {
         pub redemptions: u64,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct ApprovalForAll {
+        #[prost(string, tag="1")]
+        pub owner: ::prost::alloc::string::String,
+        #[prost(string, tag="2")]
+        pub operator: ::prost::alloc::string::String,
+        #[prost(bool, tag="3")]
+        pub approved: bool,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TransferSingle {
+        #[prost(string, tag="1")]
+        pub operator: ::prost::alloc::string::String,
+        #[prost(string, tag="2")]
+        pub from: ::prost::alloc::string::String,
+        #[prost(string, tag="3")]
+        pub to: ::prost::alloc::string::String,
+        #[prost(string, tag="4")]
+        pub id: ::prost::alloc::string::String,
+        #[prost(string, tag="5")]
+        pub amount: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct TransferBatch {
+        #[prost(string, tag="1")]
+        pub operator: ::prost::alloc::string::String,
+        #[prost(string, tag="2")]
+        pub from: ::prost::alloc::string::String,
+        #[prost(string, tag="3")]
+        pub to: ::prost::alloc::string::String,
+        #[prost(string, repeated, tag="4")]
+        pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+        #[prost(string, repeated, tag="5")]
+        pub amounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Event {
         #[prost(message, tag="1")]
@@ -90,6 +128,12 @@ pub mod mystery_box_module_event {
         MysteryBoxRevealed(MysteryBoxRevealed),
         #[prost(message, tag="5")]
         MysteryBoxSet(MysteryBoxSet),
+        #[prost(message, tag="6")]
+        ApprovalForAll(ApprovalForAll),
+        #[prost(message, tag="7")]
+        TransferSingle(TransferSingle),
+        #[prost(message, tag="8")]
+        TransferBatch(TransferBatch),
     }
 }
 // @@protoc_insertion_point(module)
