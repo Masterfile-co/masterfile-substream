@@ -16,5 +16,7 @@ pub struct TransactionMetadata {
     pub log_index: u32,
     #[prost(uint32, tag="7")]
     pub block_index: u32,
+    #[prost(string, tag="8")]
+    pub address: ::prost::alloc::string::String,
 }
 // @@protoc_insertion_point(module)

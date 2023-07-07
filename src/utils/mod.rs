@@ -16,6 +16,7 @@ pub fn extract_metadata(log: &LogView, block: &eth::Block) -> Option<Transaction
         from: pretty_hex(&log.receipt.transaction.from),
         log_index: log.log.index,
         block_index: log.log.block_index,
+        address: pretty_hex(&log.log.address),
     })
 }
 

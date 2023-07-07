@@ -10,5 +10,6 @@ message TransactionMetadata {
 	string from = 5;
 	uint32 log_index = 6;
 	uint32 block_index = 7;
+	string address = 8;
 }
 
