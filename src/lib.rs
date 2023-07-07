@@ -155,13 +155,15 @@ fn map_events(
         }
         // All Split events emitted from split main contract
         else if address == events_params.split_main_address {
-            events.push(MasterfileEvent {
-                event: Some(masterfile_event::Event::Split(SplitEvent {
-                    event: extract_split_event(log, &deployments),
-                })),
-                metadata,
-                ordinal,
-            })
+            if let Some(event) = extract_split_event(log, &deployments) {
+                events.push(MasterfileEvent {
+                    event: Some(masterfile_event::Event::Split(SplitEvent {
+                        event: Some(event),
+                    })),
+                    metadata,
+                    ordinal,
+                })
+            }
         }
         // If Events coming from deployed factory or implementation
         else if let Some(deployment) = deployments.get_last(&address) {
