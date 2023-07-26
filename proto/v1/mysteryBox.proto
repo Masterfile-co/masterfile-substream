@@ -75,4 +75,10 @@ message MysteryBoxModuleEvent {
 		repeated string ids = 4;
 		repeated string amounts = 5;
 	}
+
+  message MetaTransactionExecuted {
+		string user_address = 1;
+		string relayer_address = 2;
+		string function_signature = 3;
+	}
 }

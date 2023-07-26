@@ -116,6 +116,16 @@ pub mod mystery_box_module_event {
         pub amounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MetaTransactionExecuted {
+        #[prost(string, tag="1")]
+        pub user_address: ::prost::alloc::string::String,
+        #[prost(string, tag="2")]
+        pub relayer_address: ::prost::alloc::string::String,
+        #[prost(string, tag="3")]
+        pub function_signature: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Event {
         #[prost(message, tag="1")]
