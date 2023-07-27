@@ -4,7 +4,7 @@
 pub struct MysteryBoxModuleEvent {
     #[prost(string, tag="101")]
     pub module_address: ::prost::alloc::string::String,
-    #[prost(oneof="mystery_box_module_event::Event", tags="1, 2, 3, 4, 5, 6, 7, 8")]
+    #[prost(oneof="mystery_box_module_event::Event", tags="1, 2, 3, 4, 5, 6, 7, 8, 9")]
     pub event: ::core::option::Option<mystery_box_module_event::Event>,
 }
 /// Nested message and enum types in `MysteryBoxModuleEvent`.
@@ -144,6 +144,8 @@ pub mod mystery_box_module_event {
         TransferSingle(TransferSingle),
         #[prost(message, tag="8")]
         TransferBatch(TransferBatch),
+        #[prost(message, tag="9")]
+        MetaTransactionExecuted(MetaTransactionExecuted),
     }
 }
 // @@protoc_insertion_point(module)

@@ -98,9 +98,9 @@ pub fn extract_mystery_box_module_event(log: &LogView) -> Option<mystery_box_mod
     if let Some(event) = MetaTransactionExecuted::match_and_decode(log) {
         return Some(mystery_box_module_event::Event::MetaTransactionExecuted (
             mystery_box_module_event::MetaTransactionExecuted {
-                userAddress: pretty_hex(&event.userAddress),
-                relayerAddress: pretty_hex(&event.relayerAddress),
-                functionSignature: pretty_hex(&.event.functionSignature),
+                user_address: pretty_hex(&event.user_address),
+                relayer_address: pretty_hex(&event.relayer_address),
+                function_signature: pretty_hex(&event.function_signature),
             },
         ));
     }
