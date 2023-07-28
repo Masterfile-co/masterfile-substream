@@ -3,7 +3,7 @@ use substreams_ethereum::{block_view::LogView, Event};
 use crate::{
     abi::MysteryBoxModule::events::{
         ApprovalForAll, MysteryBoxItemRedeemed, MysteryBoxItemSet, MysteryBoxPurchased,
-        MysteryBoxRevealed, MysteryBoxSet, TransferSingle, TransferBatch,
+        MysteryBoxRevealed, MysteryBoxSet, TransferSingle, TransferBatch, MetaTransactionExecuted
     },
     pb::masterfile::mystery_box::v1::mystery_box_module_event,
     utils::pretty_hex,
@@ -92,6 +92,15 @@ pub fn extract_mystery_box_module_event(log: &LogView) -> Option<mystery_box_mod
                 to: pretty_hex(&event.to),
                 ids: event.ids.iter().map(|id| id.to_string()).collect(),
                 amounts: event.amounts.iter().map(|amount| amount.to_string()).collect(),
+            },
+        ));
+    }
+    if let Some(event) = MetaTransactionExecuted::match_and_decode(log) {
+        return Some(mystery_box_module_event::Event::MetaTransactionExecuted (
+            mystery_box_module_event::MetaTransactionExecuted {
+                user_address: pretty_hex(&event.user_address),
+                relayer_address: pretty_hex(&event.relayer_address),
+                function_signature: pretty_hex(&event.function_signature),
             },
         ));
     }

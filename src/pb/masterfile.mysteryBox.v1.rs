@@ -4,7 +4,7 @@
 pub struct MysteryBoxModuleEvent {
     #[prost(string, tag="101")]
     pub module_address: ::prost::alloc::string::String,
-    #[prost(oneof="mystery_box_module_event::Event", tags="1, 2, 3, 4, 5, 6, 7, 8")]
+    #[prost(oneof="mystery_box_module_event::Event", tags="1, 2, 3, 4, 5, 6, 7, 8, 9")]
     pub event: ::core::option::Option<mystery_box_module_event::Event>,
 }
 /// Nested message and enum types in `MysteryBoxModuleEvent`.
@@ -116,6 +116,16 @@ pub mod mystery_box_module_event {
         pub amounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
     }
     #[allow(clippy::derive_partial_eq_without_eq)]
+#[derive(Clone, PartialEq, ::prost::Message)]
+    pub struct MetaTransactionExecuted {
+        #[prost(string, tag="1")]
+        pub user_address: ::prost::alloc::string::String,
+        #[prost(string, tag="2")]
+        pub relayer_address: ::prost::alloc::string::String,
+        #[prost(string, tag="3")]
+        pub function_signature: ::prost::alloc::string::String,
+    }
+    #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Oneof)]
     pub enum Event {
         #[prost(message, tag="1")]
@@ -134,6 +144,8 @@ pub mod mystery_box_module_event {
         TransferSingle(TransferSingle),
         #[prost(message, tag="8")]
         TransferBatch(TransferBatch),
+        #[prost(message, tag="9")]
+        MetaTransactionExecuted(MetaTransactionExecuted),
     }
 }
 // @@protoc_insertion_point(module)
