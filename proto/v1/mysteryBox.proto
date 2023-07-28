@@ -12,7 +12,7 @@ message MysteryBoxModuleEvent {
 		ApprovalForAll approval_for_all = 6;
 		TransferSingle transfer_single = 7;
 		TransferBatch transfer_batch = 8;
-    MetaTransactionExecuted meta_transaction_executed = 9;
+    	MetaTransactionExecuted meta_transaction_executed = 9;
 	}
 	string module_address = 101;
 
