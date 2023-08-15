@@ -17,6 +17,13 @@ tasks:
         vars:
           ENV: stg
 
+  prepare:prd:
+    cmds:
+      - task: prepare
+        vars:
+          ENV: prd
+
+
   proto:
     cmds:
       - substreams protogen ./substreams.yaml --exclude-paths="sf/substreams,google"
@@ -71,6 +78,14 @@ tasks:
       - task: proto
       - task: build
       - task: pack
+
+  build:prd:
+    cmds:
+      - task: prepare:prd
+      - task: proto
+      - task: build
+      - task: pack
+
 
   start:
     cmds:
